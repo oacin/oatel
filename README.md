@@ -1,2 +1,2 @@
 # hotel-booking
-Hotel 2
+Hotel x
