@@ -107,6 +107,32 @@ public class RoomRepository {
 
   public void edit(Room room, int number)
   {
+    String update = "UPDATE room SET floor = ?, type = ?, capacity = ? " +
+      "WHERE number = ?";
+      
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      conn.setAutoCommit(false);
+
+      PreparedStatement pst = conn.prepareStatement(update);
+
+      pst.setString(1, room.getFloor());
+      pst.setString(2, room.getType());
+      pst.setInt(3, room.getCapacity());
+      pst.setInt(4, number);
+
+      int affectedRows = pst.executeUpdate();
+
+      if (affectedRows > 0) {
+        conn.commit();
+
+        System.out.println(String.format("Room %s had been edited", number));
+      } else {
+        conn.rollback();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void lock(int number)

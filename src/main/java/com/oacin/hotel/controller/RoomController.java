@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,5 +34,11 @@ public class RoomController {
   void add(@RequestBody Room room)
   {
     repository.add(room);
+  }
+
+  @PutMapping("/room/{number}")
+  void edit(@RequestBody Room room, @PathVariable int number)
+  {
+    repository.edit(room, number);
   }
 }
