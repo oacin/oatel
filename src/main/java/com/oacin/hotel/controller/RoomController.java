@@ -1,7 +1,6 @@
 package com.oacin.hotel.controller;
 
-import java.util.List;
-
+import com.oacin.hotel.Return;
 import com.oacin.hotel.model.Room;
 import com.oacin.hotel.repository.RoomRepository;
 
@@ -19,32 +18,52 @@ public class RoomController {
   RoomRepository repository;
 
   @GetMapping("/room")
-  List<Room> findAll()
+  public Return findAll()
   {
-    return repository.findAll();
+    try {
+      return new Return(repository.findAll());
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @GetMapping("/room/{number}")
-  Room findByNumber(@PathVariable int number)
+  public Return findByNumber(@PathVariable int number)
   {
-    return repository.findByNumber(number);
+    try {
+      return new Return(repository.findByNumber(number));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @PostMapping("/room")
-  void add(@RequestBody Room room)
+  public Return add(@RequestBody Room room)
   {
-    repository.add(room);
+    try {
+      return new Return(repository.add(room));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @PutMapping("/room/{number}")
-  void edit(@RequestBody Room room, @PathVariable int number)
+  public Return edit(@RequestBody Room room, @PathVariable int number)
   {
-    repository.edit(room, number);
+    try {
+      return new Return(repository.edit(room, number));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @PutMapping("room/toggleLock/{number}")
-  void toggleLock(@PathVariable int number)
+  public Return toggleLock(@PathVariable int number)
   {
-    repository.toggleLock(number);
+    try {
+      return new Return(repository.toggleLock(number));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 }

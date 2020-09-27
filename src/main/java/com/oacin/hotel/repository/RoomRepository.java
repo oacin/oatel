@@ -78,7 +78,7 @@ public class RoomRepository {
     return room;
   }
 
-  public void add(Room room)
+  public Room add(Room room)
   {
     String insert = "INSERT INTO room(floor, type, capacity, isLocked) " +
       "VALUES(?, ?, ?, ?)";
@@ -106,9 +106,11 @@ public class RoomRepository {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return room;
   }
 
-  public void edit(Room room, int number)
+  public Room edit(Room room, int number)
   {
     String update = "UPDATE room SET floor = ?, type = ?, capacity = ? " +
       "WHERE number = ?";
@@ -136,9 +138,11 @@ public class RoomRepository {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return room;
   }
 
-  public void toggleLock(int number)
+  public Boolean toggleLock(int number)
   {
     String query = String.format("SELECT isLocked FROM room WHERE number = %s", number);
 
@@ -184,5 +188,7 @@ public class RoomRepository {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return !isLocked;
   }
 }

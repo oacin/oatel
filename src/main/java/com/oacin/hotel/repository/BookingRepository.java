@@ -78,7 +78,7 @@ public class BookingRepository {
     return booking;
   }
 
-  public void add(Booking booking)
+  public Booking add(Booking booking)
   {
     String insert = "INSERT INTO booking(room, startDate, endDate, price, guest) VALUES(?, ?, ?, ?, ?)";
 
@@ -106,9 +106,11 @@ public class BookingRepository {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    return booking;
   }
 
-  public void destroy(int id)
+  public int destroy(int id)
   {
     String delete = String.format("DELETE FROM booking WHERE id = %s", id);
 
@@ -131,5 +133,6 @@ public class BookingRepository {
       e.printStackTrace();
     }
 
+    return id;
   }
 }

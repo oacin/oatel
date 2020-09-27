@@ -1,7 +1,6 @@
 package com.oacin.hotel.controller;
 
-import java.util.List;
-
+import com.oacin.hotel.Return;
 import com.oacin.hotel.model.Booking;
 import com.oacin.hotel.repository.BookingRepository;
 
@@ -19,26 +18,42 @@ public class BookingController {
   BookingRepository repository;
 
   @GetMapping("/booking")
-  List<Booking> findAll()
+  public Return findAll()
   {
-    return repository.findAll();
+    try {
+      return new Return(repository.findAll());
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @GetMapping("/booking/{id}")
-  Booking findById(@PathVariable int id)
+  public Return findById(@PathVariable int id)
   {
-    return repository.findById(id);
+    try {
+      return new Return(repository.findById(id));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
-  
+
   @PostMapping("/booking")
-  void add(@RequestBody Booking booking)
+  public Return add(@RequestBody Booking booking)
   {
-    repository.add(booking);
+    try {
+      return new Return(repository.add(booking));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 
   @DeleteMapping("/booking/{id}")
-  void destroy(@PathVariable int id)
+  public Return destroy(@PathVariable int id)
   {
-    repository.destroy(id);
+    try {
+      return new Return(repository.destroy(id));
+    } catch (Exception e) {
+      return new Return(e.getMessage());
+    }
   }
 }
