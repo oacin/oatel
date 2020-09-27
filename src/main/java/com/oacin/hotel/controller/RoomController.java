@@ -41,4 +41,10 @@ public class RoomController {
   {
     repository.edit(room, number);
   }
+
+  @PutMapping("room/toggleLock/{number}")
+  void toggleLock(@PathVariable int number)
+  {
+    repository.toggleLock(number);
+  }
 }

@@ -135,7 +135,55 @@ public class RoomRepository {
     }
   }
 
-  public void lock(int number)
+  public void toggleLock(int number)
   {
+    String query = String.format("SELECT isLocked FROM room WHERE number = %s", number);
+
+    String update = "UPDATE room SET isLocked = ? WHERE number = ?";
+
+    boolean isLocked = false;
+
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      conn.setAutoCommit(false);
+
+      Statement st = conn.createStatement();
+
+      ResultSet rs = st.executeQuery(query);
+
+      if (!rs.next()) {
+        return;
+      }
+
+      while(rs.next())
+      {
+        isLocked = rs.getBoolean("isLocked");
+      }
+
+      PreparedStatement pst = conn.prepareStatement(update);
+
+      pst.setInt(2, number);
+
+      if (isLocked) {
+        pst.setBoolean(1, false);
+      } else {
+        pst.setBoolean(1, true);
+      }
+
+      int affectedRows = pst.executeUpdate();
+
+      if (affectedRows > 0) {
+        conn.commit();
+
+        if (isLocked) {
+          System.out.println(String.format("Room %s has been unlocked", number));  
+        } else {
+          System.out.println(String.format("Room %s has been locked", number));
+        }
+      } else {
+        conn.rollback();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
