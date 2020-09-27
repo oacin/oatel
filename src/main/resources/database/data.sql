@@ -1,5 +1,5 @@
 INSERT INTO room(floor, type, capacity, isLocked)
-VALUES('T', 'Single', 1, 0),
+VALUES('G', 'Single', 1, 0),
 ('1', 'Double', 2, 0),
 ('2', 'Single', 1, 0),
 ('3', 'Queen', 4, 0),
