@@ -103,7 +103,6 @@ function showRoom(room) {
         `<p class="card-text">Capacity: ${room.capacity}</p>` +
         `<p class="card-text">Is Locked: ${room.isLocked}</p>` +
         '<a href="javascript:void(0)" class="btn btn-warning m-3">Edit</a>' +
-        '<a href="javascript:void(0)" class="btn btn-danger m-3">🗑</a>' +
       '</div>' +
     '</div>';
 
@@ -130,6 +129,36 @@ function findRoom(number) {
   xhttp.send();
 }
 
+function addRoom() {
+  var room = {};
+
+  room.floor = document.getElementById("inputFloor").value;
+  room.type = document.getElementById("inputType").value;
+  room.capacity = parseInt(document.getElementById("inputCapacity").value);
+  room.isLocked = document.querySelector('#inputIsLocked').checked;
+
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      var resp = JSON.parse(this.responseText);
+
+      if (resp.status != 'OK') {
+        console.log(resp.errorMessage);
+
+        return;
+      }
+
+      showPage("rooms");
+      findRooms();
+    }
+  };
+
+  xhttp.open("POST", `${url}/room`, true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(JSON.stringify(room));
+}
+
 function editRoom(number) {
 
 }
@@ -154,7 +183,7 @@ function showBookings(bookings) {
     
     var row =
       '<tr>' +
-        `<th scope="row">${booking.id}</th>` +
+        `<th scope="row"><a href="javascript:void(0)" onclick="showPage('booking');findBooking(${booking.id});">${booking.id}</a></th>` +
         `<td>${booking.room}</td>` +
         `<td>${booking.startDate}</td>` +
         `<td>${booking.endDate}</td>` +
@@ -192,6 +221,93 @@ function findBookings() {
   xhttp.send();
 }
 
-function destroyBooking(id) {
+function showBooking(booking) {
+  var card =
+    '<div class="card text-center mt-3">' +
+      '<div class="card-header">' +
+        `Booking ${booking.id}` +
+      '</div>' +
+      '<div class="card-body">' +
+        `<p class="card-text">Room: ${booking.room}</p>` +
+        `<p class="card-text">Start Date: ${booking.startDate}</p>` +
+        `<p class="card-text">End Date: ${booking.endDate}</p>` +
+        `<p class="card-text">Price: ${booking.price}</p>` +
+        `<p class="card-text">Guest: ${booking.guest}</p>` +
+        `<a href="javascript:void(0)" class="btn btn-danger m-3" onclick="destroyBooking('${booking.id}')">🗑</a>` +
+      '</div>' +
+    '</div>';
 
+    document.getElementById("booking_content").innerHTML = card;
+}
+
+function findBooking(id) {
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var resp = JSON.parse(this.responseText);
+
+      if (resp.status != 'OK') {
+        console.log(resp.errorMessage);
+        return;
+      }
+
+      showBooking(resp.object);
+    }
+  };
+
+  xhttp.open("GET", `${url}/booking/${id}`, true);
+  xhttp.send();
+}
+
+function addBooking() {
+  var booking = {};
+
+  booking.room = parseInt(document.getElementById("inputRoom").value);
+  booking.startDate = document.getElementById("inputStartDate").value;
+  booking.endDate = document.getElementById("inputEndDate").value;
+  booking.price = parseInt(document.getElementById("inputPrice").value);
+  booking.guest = document.getElementById("inputGuest").value;
+
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      var resp = JSON.parse(this.responseText);
+
+      if (resp.status != 'OK') {
+        console.log(resp.errorMessage);
+
+        return;
+      }
+
+      showPage("bookings");
+      findBookings();
+    }
+  };
+
+  xhttp.open("POST", `${url}/booking`, true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(JSON.stringify(booking));
+}
+
+function destroyBooking(id) {
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var resp = JSON.parse(this.responseText);
+
+      if (resp.status != 'OK') {
+        console.log(resp.errorMessage);
+        return;
+      }
+      
+      showPage("bookings");
+      findBookings();
+    }
+  };
+
+  xhttp.open("DELETE", `${url}/booking/${id}`, true);
+  xhttp.send();
 }
