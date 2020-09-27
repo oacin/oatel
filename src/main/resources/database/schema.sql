@@ -13,6 +13,6 @@ CREATE TABLE booking(
   endDate DATE NOT NULL,
   price FLOAT NOT NULL,
   guest VARCHAR(100) NOT NULL,
-  PRIMARY KEY(number),
+  PRIMARY KEY(id),
   FOREIGN KEY(room) REFERENCES room(number)
 );
