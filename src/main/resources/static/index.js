@@ -1,6 +1,6 @@
 var url = "http://localhost:777";
 
-var pages = ['home', 'rooms', 'bookings', 'room', 'booking', 'new_room', 'new_booking'];
+var pages = ['home', 'rooms', 'bookings', 'room', 'booking', 'new_room', 'new_booking', 'edit_room'];
 
 function showPage(currentPage) {
   var found = false;
@@ -102,7 +102,7 @@ function showRoom(room) {
         `<p class="card-text">Type: ${room.type}</p>` +
         `<p class="card-text">Capacity: ${room.capacity}</p>` +
         `<p class="card-text">Is Locked: ${room.isLocked}</p>` +
-        '<a href="javascript:void(0)" class="btn btn-warning m-3">Edit</a>' +
+        `<a href="javascript:void(0)" class="btn btn-warning m-3" onclick="showPage('edit_room');showEditRoom(${room.number})">🚧</a>` +
       '</div>' +
     '</div>';
 
@@ -159,8 +159,46 @@ function addRoom() {
   xhttp.send(JSON.stringify(room));
 }
 
-function editRoom(number) {
+function showEditRoom(number) {
+  var numberField = 
+    '<div class="form-group mt-3">' +
+      '<label for="inputNumber">Number</label>' +
+      '<input type="number" class="form-control" id="inputNumber" placeholder="Number" disabled>' +
+    '</div>';
 
+  document.getElementById("edit_room_content").innerHTML = numberField;
+
+  document.getElementById("inputNumber").value = number;
+}
+
+function editRoom() {
+  var room = {};
+
+  room.number = document.getElementById("inputNumber").value;
+
+  room.floor = document.getElementById("inputEditFloor").value;
+  room.type = document.getElementById("inputEditType").value;
+  room.capacity = parseInt(document.getElementById("inputEditCapacity").value);
+
+  var xhttp = new XMLHttpRequest();
+
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var resp = JSON.parse(this.responseText);
+      
+      if (resp.status != 'OK') {
+        console.log(resp.errorMessage);
+        return;
+      }
+
+      showPage("rooms");
+      findRooms();
+    }
+  }
+
+  xhttp.open("PUT", `${url}/room/${room.number}`, true);
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(JSON.stringify(room));
 }
 
 function showBookings(bookings) {
