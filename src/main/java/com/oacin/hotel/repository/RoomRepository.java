@@ -23,7 +23,7 @@ public class RoomRepository {
   {
     List<Room> rooms = new ArrayList<>();
 
-    String query = "SELECT number, floor, type, capacity FROM room";
+    String query = "SELECT number, floor, type, capacity, isLocked FROM room";
 
     try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
       Statement st = conn.createStatement();
@@ -38,6 +38,7 @@ public class RoomRepository {
         room.setFloor(rs.getString("floor"));
         room.setType(rs.getString("type"));
         room.setCapacity(rs.getInt("capacity"));
+        room.setIsLocked(rs.getBoolean("isLocked"));
 
         rooms.add(room);
       }
@@ -53,7 +54,7 @@ public class RoomRepository {
   {
     Room room = new Room();
 
-    String query = String.format("SELECT number, floor, type, capacity FROM room " + 
+    String query = String.format("SELECT number, floor, type, capacity, isLocked FROM room " + 
       "WHERE number = %s", number);
 
     try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
@@ -67,6 +68,7 @@ public class RoomRepository {
         room.setFloor(rs.getString("floor"));
         room.setType(rs.getString("type"));
         room.setCapacity(rs.getInt("capacity"));
+        room.setIsLocked(rs.getBoolean("isLocked"));
       }
 
     } catch (Exception e) {
@@ -78,8 +80,8 @@ public class RoomRepository {
 
   public void add(Room room)
   {
-    String insert = "INSERT INTO room(floor, type, capacity) " +
-      "VALUES(?, ?, ?)";
+    String insert = "INSERT INTO room(floor, type, capacity, isLocked) " +
+      "VALUES(?, ?, ?, ?)";
 
     try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
       conn.setAutoCommit(false);
@@ -89,6 +91,7 @@ public class RoomRepository {
       pst.setString(1, room.getFloor());
       pst.setString(2, room.getType());
       pst.setInt(3, room.getCapacity());
+      pst.setBoolean(4, room.getIsLocked());
 
       int affectedRows = pst.executeUpdate();
 
