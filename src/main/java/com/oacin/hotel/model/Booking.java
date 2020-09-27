@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Booking {
 
   private int id;
-  private Room room;
+  private int room;
   private Date startDate;
   private Date endDate;
   private float price;
@@ -15,7 +15,7 @@ public class Booking {
   public Booking() {
   }
 
-  public Booking(int id, Room room, Date startDate, Date endDate, float price, String guest) {
+  public Booking(int id, int room, Date startDate, Date endDate, float price, String guest) {
     this.id = id;
     this.room = room;
     this.startDate = startDate;
@@ -32,11 +32,11 @@ public class Booking {
     this.id = id;
   }
 
-  public Room getRoom() {
+  public int getRoom() {
     return this.room;
   }
 
-  public void setRoom(Room room) {
+  public void setRoom(int room) {
     this.room = room;
   }
 
