@@ -79,4 +79,59 @@ public class BookingRepository {
 
     return booking;
   }
+
+  public void add(Booking booking)
+  {
+    String insert = "INSERT INTO booking(room, startDate, endDate, price, guest) VALUES(?, ?, ?, ?, ?)";
+
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      conn.setAutoCommit(false);
+      
+      PreparedStatement pst = conn.prepareStatement(insert);
+
+      pst.setInt(1, booking.getRoom());
+      pst.setDate(2, booking.getStartDate());
+      pst.setDate(3, booking.getEndDate());
+      pst.setFloat(4, booking.getPrice());
+      pst.setString(5, booking.getGuest());
+
+      int affectedRows = pst.executeUpdate();
+
+      if (affectedRows > 0) {
+        conn.commit();
+
+        System.out.println("A new booking has been made");
+      } else {
+        conn.rollback();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void destroy(int id)
+  {
+    String delete = String.format("DELETE FROM booking WHERE id = %s", id);
+
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      conn.setAutoCommit(false);
+
+      PreparedStatement pst = conn.prepareStatement(delete);
+
+      int affectedRows = pst.executeUpdate();
+
+      if (affectedRows > 0) {
+        conn.commit();
+
+        System.out.println(String.format("Booking %s has been deleted", id));
+      } else {
+        conn.rollback();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+  }
 }
