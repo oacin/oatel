@@ -3,6 +3,7 @@ CREATE TABLE room(
   floor VARCHAR2(1) NOT NULL,
   type VARCHAR2(10) NOT NULL,
   capacity INT NOT NULL,
+  isLocked BIT NOT NULL,
   PRIMARY KEY(number)
 );
 

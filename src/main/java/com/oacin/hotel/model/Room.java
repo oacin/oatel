@@ -6,16 +6,18 @@ public class Room {
   private String floor;
   private String type;
   private int capacity;
+  private boolean isLocked;
 
 
   public Room() {
   }
 
-  public Room(int number, String floor, String type, int capacity) {
+  public Room(int number, String floor, String type, int capacity, boolean isLocked) {
     this.number = number;
     this.floor = floor;
     this.type = type;
     this.capacity = capacity;
+    this.isLocked = isLocked;
   }
 
   public int getNumber() {
@@ -48,6 +50,14 @@ public class Room {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
+  }
+
+  public boolean getIsLocked() {
+    return this.isLocked;
+  }
+
+  public void setIsLocked(boolean isLocked) {
+    this.isLocked = isLocked;
   }
 
 }
