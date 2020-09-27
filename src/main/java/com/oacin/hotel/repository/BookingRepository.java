@@ -5,8 +5,6 @@ import com.oacin.hotel.model.Booking;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
