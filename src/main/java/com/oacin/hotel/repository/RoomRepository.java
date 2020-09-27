@@ -54,7 +54,7 @@ public class RoomRepository {
     Room room = new Room();
 
     String query = String.format("SELECT number, floor, type, capacity FROM room " + 
-    "WHERE number = %s", number);
+      "WHERE number = %s", number);
 
     try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
       Statement st = conn.createStatement();
@@ -78,9 +78,34 @@ public class RoomRepository {
 
   public void add(Room room)
   {
+    String insert = "INSERT INTO room(floor, type, capacity) " +
+      "VALUES(?, ?, ?)";
+
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      conn.setAutoCommit(false);
+
+      PreparedStatement pst = conn.prepareStatement(insert);
+
+      pst.setString(1, room.getFloor());
+      pst.setString(2, room.getType());
+      pst.setInt(3, room.getCapacity());
+
+      int affectedRows = pst.executeUpdate();
+
+      if (affectedRows > 0) {
+        conn.commit();
+
+        System.out.println("New room added");
+      } else {
+        conn.rollback();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  public void edit(int number)
+  public void edit(Room room, int number)
   {
   }
 
