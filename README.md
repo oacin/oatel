@@ -1,2 +1,2 @@
-# hotel-booking
-Hotel 😎🏖
+# Oatel
+A hotel system to control booking 😎🏖
