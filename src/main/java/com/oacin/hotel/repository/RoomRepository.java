@@ -144,7 +144,7 @@ public class RoomRepository {
 
     String update = "UPDATE room SET isLocked = ? WHERE number = ?";
 
-    boolean isLocked = false;
+    boolean isLocked = true;
 
     try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
       conn.setAutoCommit(false);
@@ -153,10 +153,6 @@ public class RoomRepository {
 
       ResultSet rs = st.executeQuery(query);
 
-      if (!rs.next()) {
-        return;
-      }
-
       while(rs.next())
       {
         isLocked = rs.getBoolean("isLocked");
@@ -164,13 +160,13 @@ public class RoomRepository {
 
       PreparedStatement pst = conn.prepareStatement(update);
 
-      pst.setInt(2, number);
-
       if (isLocked) {
         pst.setBoolean(1, false);
       } else {
         pst.setBoolean(1, true);
       }
+
+      pst.setInt(2, number);
 
       int affectedRows = pst.executeUpdate();
 
