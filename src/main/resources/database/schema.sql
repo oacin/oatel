@@ -1,13 +1,13 @@
 CREATE TABLE room(
-  number INT NOT NULL,
+  number INT NOT NULL AUTO_INCREMENT,
   floor VARCHAR2(1) NOT NULL,
-  category VARCHAR2(10) NOT NULL,
+  type VARCHAR2(10) NOT NULL,
   capacity INT NOT NULL,
   PRIMARY KEY(number)
 );
 
 CREATE TABLE booking(
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   room INT NOT NULL,
   startDate DATE NOT NULL,
   endDate DATE NOT NULL,

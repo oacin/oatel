@@ -4,17 +4,17 @@ public class Room {
   
   private int number;
   private String floor;
-  private String category;
+  private String type;
   private int capacity;
 
 
   public Room() {
   }
 
-  public Room(int number, String floor, String category, int capacity) {
+  public Room(int number, String floor, String type, int capacity) {
     this.number = number;
     this.floor = floor;
-    this.category = category;
+    this.type = type;
     this.capacity = capacity;
   }
 
@@ -34,12 +34,12 @@ public class Room {
     this.floor = floor;
   }
 
-  public String getCategory() {
-    return this.category;
+  public String getType() {
+    return this.type;
   }
 
-  public void setCategory(String category) {
-    this.category = category;
+  public void setType(String type) {
+    this.type = type;
   }
 
   public int getCapacity() {
