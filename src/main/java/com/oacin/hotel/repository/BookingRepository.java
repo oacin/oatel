@@ -5,6 +5,8 @@ import com.oacin.hotel.model.Booking;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.spi.DirStateFactory.Result;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -48,5 +50,33 @@ public class BookingRepository {
     }
 
     return bookings;
+  }
+
+  public Booking findById(int id)
+  {
+    Booking booking = new Booking();
+
+    String query = String.format("SELECT id, room, startDate, endDate, price, guest FROM booking WHERE id = %s", id);
+
+    try (Connection conn = jdbcTemplate.getDataSource().getConnection()) {
+      Statement st = conn.createStatement();
+      
+      ResultSet rs = st.executeQuery(query);
+
+      while(rs.next())
+      {
+        booking.setId(rs.getInt("id"));
+        booking.setRoom(rs.getInt("room"));
+        booking.setStartDate(rs.getDate("startDate"));
+        booking.setEndDate(rs.getDate("endDate"));
+        booking.setPrice(rs.getFloat("price"));
+        booking.setGuest(rs.getString("guest"));
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return booking;
   }
 }
